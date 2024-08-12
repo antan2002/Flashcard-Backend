@@ -3,13 +3,13 @@ const cors = require('cors');
 const { Pool } = require('pg');
 
 const app = express();
-const port = 5000;
+const port = 5001;
 
-// Middleware
+
 app.use(cors());
 app.use(express.json());
 
-// PostgreSQL client setup
+
 const pool = new Pool({
     user: "postgres",
     host: "127.0.0.1",
@@ -18,9 +18,9 @@ const pool = new Pool({
     port: 5432,
 });
 
-// Routes
 
-// Get all flashcards
+
+
 app.get('/api/flashcards', async (req, res) => {
     try {
         const result = await pool.query('SELECT * FROM flashcards');
@@ -31,7 +31,7 @@ app.get('/api/flashcards', async (req, res) => {
     }
 });
 
-// Add a new flashcard
+
 app.post('/api/flashcards', async (req, res) => {
     const { question, answer } = req.body;
 
@@ -56,7 +56,7 @@ app.delete('/api/flashcards/:id', async (req, res) => {
         if (result.rowCount === 0) {
             return res.status(404).json('Flashcard not found');
         }
-        res.status(204).send(); // No content
+        res.status(204).send();
     } catch (err) {
         console.error('Error deleting flashcard:', err.message);
         res.status(500).json({ error: 'Error deleting flashcard', details: err.message });
@@ -64,7 +64,6 @@ app.delete('/api/flashcards/:id', async (req, res) => {
 });
 
 
-// Start server
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 });
